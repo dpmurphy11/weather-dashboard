@@ -5,8 +5,90 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap" rel="stylesheet">
+      <!-- <link rel="stylesheet" href="./assets/css/jass.css" /> -->
+    <link rel="stylesheet" href="./assets/css/style.css" />
+ 
 </head>
 <body>
-    
+    <header class="container-fluid bg-dark text-light mb-3 p-3">
+        <div class="row justify-content-center">
+            <h1>Weather Dashboard</h1>
+        </div>
+    </header>
+
+    <main class="container-fluid my-5">
+        <div class="row">
+            <!-- search sidebar. takes all space for small, 25% for medium and up  -->
+            <sidebar class="col-12 col-md-3 form-group">
+                <label for="city-text"><h2>Search for a City:</h2></label>
+                <input type="text" id="search-text" class="form-control p-4 rounded mb-3" placeholder="Boston" required />
+                <button type="button" id="search-button" class="btn btn-primary btn-lg btn-block">Search</button>
+                <hr>
+                <div id="button-cities">
+                    <!-- <button type="button" class="btn btn-secondary btn-lg btn-block">Block level button</button> -->
+                </div>
+            </sidebar>
+
+            <div class="col-12 col-md-9">
+                <div class="d-flex flex-column flex-no-wrap justify-content-around align-items-start mb-3 current-weather">
+                    <h2 class="city">City: <img src="https://openweathermap.org/img/w/04d.png"></h2>
+                    <div id="temp">Temp:</div>
+                    <div id="wind">Wind:</div>
+                    <div id="humidity">Humidity:</div>
+                    <div id="uv">UV Index: <button class="btn btn-success" disabled>0.00</button></div>
+                </div>
+                <div class="row justify-content-between m-1">
+                    <div class="col-12">
+                        <h3>5-Day Forcast</h3>
+                    </div>
+                    <div class="col-12 col-md-4 col-lg-2 custom-card">
+                        <h3 class="date"></h3>
+                        <img class="icon">
+                        <div class="temp"></div>
+                        <div class="wind"></div>
+                        <div class="humidity"></div>
+                    </div>
+                    <div class="col-12 col-md-4 col-lg-2 custom-card">
+                        <h3 class="date"></h3>
+                        <img class="icon">
+                        <div class="temp"></div>
+                        <div class="wind"></div>
+                        <div class="humidity"></div>
+                    </div>
+                    <div class="col-12 col-md-4 col-lg-2 custom-card">
+                        <h3 class="date"></h3>
+                        <img class="icon">
+                        <div class="temp"></div>
+                        <div class="wind"></div>
+                        <div class="humidity"></div>
+                    </div>
+                    <div class="col-12 col-md-4 col-lg-2 custom-card">
+                        <h3 class="date"></h3>
+                        <img class="icon">
+                        <div class="temp"></div>
+                        <div class="wind"></div>
+                        <div class="humidity"></div>
+                    </div>
+                    <div class="col-12 col-md-4 col-lg-2 custom-card">
+                        <h3 class="date"></h3>
+                        <img class="icon">
+                        <div class="temp"></div>
+                        <div class="wind"></div>
+                        <div class="humidity"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+    <script src="./assets/js/script.js"></script>
 </body>
 </html>

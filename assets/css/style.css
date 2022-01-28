@@ -1,0 +1,19 @@
+.current-weather {
+    border: 1px solid black;
+    min-height:35vh ;
+    padding: 10px 5px;
+    font-size: 1.5em;
+    font-weight: 600;
+}
+
+.city {
+    padding: 0px;
+}
+
+.custom-card {
+    min-width: 16rem;
+    border: 1px solid lightgray;
+    color: white;
+    background-color: darkblue;
+    padding: 15px;
+}
