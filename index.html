@@ -19,26 +19,29 @@
         </div>
     </header>
 
-    <main class="container-fluid my-5">
+    <div class="container-fluid my-5">
         <div class="row">
             <!-- search sidebar. takes all space for small, 25% for medium and up  -->
             <sidebar class="col-12 col-md-3 form-group">
-                <label for="city-text"><h2>Search for a City:</h2></label>
-                <input type="text" id="search-text" class="form-control p-4 rounded mb-3" placeholder="Boston" required />
-                <button type="button" id="search-button" class="btn btn-primary btn-lg btn-block">Search</button>
+                <div class="ui-widget">
+                    <label for="city-text"><h2>Search for a City:</h2></label>
+                    <input name="search-text" type="text" id="search-text" class="form-control p-4 rounded mb-3" placeholder="" required />
+                </div>
+                    <button type="button" id="search-button" class="btn btn-primary btn-lg btn-block">Search</button>
                 <hr>
+                <div id="msg"></div>
                 <div id="button-cities">
                     <!-- <button type="button" class="btn btn-secondary btn-lg btn-block">Block level button</button> -->
                 </div>
             </sidebar>
 
-            <div class="col-12 col-md-9">
+            <main class="col-12 col-md-9">
                 <div class="d-flex flex-column flex-no-wrap justify-content-around align-items-start mb-3 current-weather">
-                    <h2 class="city">City: <img src="https://openweathermap.org/img/w/04d.png"></h2>
-                    <div id="temp">Temp:</div>
-                    <div id="wind">Wind:</div>
-                    <div id="humidity">Humidity:</div>
-                    <div id="uv">UV Index: <button class="btn btn-success" disabled>0.00</button></div>
+                    <h2 class="city"></h2>
+                    <div class="temp"></div>
+                    <div class="wind"></div>
+                    <div class="humidity"></div>
+                    <div class="uv"></div>
                 </div>
                 <div class="row justify-content-between m-1">
                     <div class="col-12">
@@ -80,9 +83,9 @@
                         <div class="humidity"></div>
                     </div>
                 </div>
-            </div>
+            </main>
         </div>
-    </main>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>

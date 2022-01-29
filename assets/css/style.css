@@ -11,9 +11,13 @@
 }
 
 .custom-card {
-    min-width: 16rem;
+    min-width: 13rem;
     border: 1px solid lightgray;
     color: white;
     background-color: darkblue;
     padding: 15px;
+}
+
+.hidden {
+    display: none;
 }
