@@ -1,7 +1,9 @@
-* {
+body {
     font-family: 'Blinker', sans-serif;
-
+    background-color: white;
 }
+
+
 .uv-good {
     background-color: #4a7017;
     color: white;
@@ -31,10 +33,11 @@ header {
     color: white;
 }
 .current-weather {
-    border: 1px solid lightgray;
+    border: 1px solid gray;
     min-height:35vh ;
     padding: 10px 5px;
     font-size: 1.5em;
+    background-color:lavender;
 }
 
 .city {

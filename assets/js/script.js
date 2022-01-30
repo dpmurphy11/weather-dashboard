@@ -83,6 +83,7 @@ var availableTags = [
     "Berlin",
     "Moscow",
 ];
+availableTags.sort();
   textSearch.autocomplete({
     source: availableTags
   });
@@ -127,7 +128,7 @@ function renderResults(current, forcast) {
         $(card).children('.temp').text('Temp: ' + forcast.daily[i+1].temp.day + String.fromCharCode(176));
         $(card).children('.wind').text('Wind: ' + forcast.daily[i+1].wind_speed + ' mph');
         $(card).children('.humidity').text('Humidity: ' + forcast.daily[i+1].humidity + '%');
-    })
+    });
 
     // show main content
     main.css('display', 'block');
