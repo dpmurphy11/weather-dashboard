@@ -7,13 +7,14 @@
     <title>Weather Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Blinker:wght@700&family=Roboto&display=swap" rel="stylesheet">
       <!-- <link rel="stylesheet" href="./assets/css/jass.css" /> -->
     <link rel="stylesheet" href="./assets/css/style.css" />
  
 </head>
 <body>
-    <header class="container-fluid bg-dark text-light mb-3 p-3">
+    <header class="container-fluid text-light mb-3 p-3">
         <div class="row justify-content-center">
             <h1>Weather Dashboard</h1>
         </div>
@@ -25,11 +26,11 @@
             <sidebar class="col-12 col-md-3 form-group">
                 <div class="ui-widget">
                     <label for="city-text"><h2>Search for a City:</h2></label>
-                    <input name="search-text" type="text" id="search-text" class="form-control p-4 rounded mb-3" placeholder="" required />
+                    <input name="search-text" type="text" id="search-text" class="form-control p-4 rounded mb-3" placeholder="Enter city name" required />
                 </div>
-                    <button type="button" id="search-button" class="btn btn-primary btn-lg btn-block">Search</button>
+                <button type="button" id="search-button" class="btn btn-primary btn-lg btn-block">Search</button>
                 <hr>
-                <div id="msg"></div>
+                    <div class="alert alert-info hidden" role="alert" id="msg"></div>
                 <div id="button-cities">
                     <!-- <button type="button" class="btn btn-secondary btn-lg btn-block">Block level button</button> -->
                 </div>

@@ -4,183 +4,250 @@ const cityButtons = $('#button-cities');
 const main = $('main');
 const todayDiv = $('.current-weather');
 const cardDivs =$('.custom-card');
-
 const apiKey = '74eee0ffef0df6f840ed6df7d1795e48'
-var cityResponse = '';
+
+// render saved cities to secondary buttons list
+ var cities = JSON.parse(localStorage.getItem("cities")) || [];
+if (cities.length) {
+    cities.sort();
+    cities.forEach(city => {
+        // add secondary button
+        var cityButton = $('<button type="button" class="btn btn-secondary btn-lg btn-block"></button>');
+        cityButton.text(city);
+        cityButtons.append(cityButton);
+    });
+}
 
 // populate autocomplete widget
 var availableTags = [
-    "Albany",
-    "Boston",
+    "New York",
+    "Los Angeles",
     "Chicago",
-    "London"
-  ];
+    "Houston",
+    "Phoenix",
+    "Philadelphia",
+    "San Antonio",
+    "San Diego",
+    "Dallas",
+    "San Jose",
+    "Austin",
+    "Jacksonville",
+    "Fort Worth",
+    "Columbus",
+    "Indianapolis",
+    "Charlotte",
+    "San Francisco",
+    "Seattle",
+    "Denver",
+    "Washington",
+    "Nashville",
+    "Oklahoma City",
+    "El Paso",
+    "Boston",
+    "Portland",
+    "Las Vegas",
+    "Detroit",
+    "Memphis",
+    "Louisville",
+    "Baltimore",
+    "Milwaukee",
+    "Albuquerque",
+    "Tucson",
+    "Fresno",
+    "Sacramento",
+    "Kansas City",
+    "Mesa",
+    "Atlanta",
+    "Omaha",
+    "Colorado Springs",
+    "Raleigh",
+    "Long Beach",
+    "Virginia Beach",
+    "Miami",
+    "Oakland",
+    "Minneapolis",
+    "Tulsa",
+    "Bakersfield",
+    "Wichita",
+    "Arlington",
+    "Tokyo",
+    "Delhi",
+    "Shanghai",
+    "Sao Paulo",
+    "Mexico City",
+    "Beijing",
+    "Mumbai",
+    "London",
+    "Rome",
+    "Madrid",
+    "Berlin",
+    "Moscow",
+];
   textSearch.autocomplete({
     source: availableTags
   });
 
-main.css('display', 'visible');
-// console.log(cardDivs);
+// hide main content
+main.css('display', 'none');
+// hide user message
+toggleMsg('hidden');
 
-$(todayDiv).children('.city').html('City: Boston <img src="https://openweathermap.org/img/w/04d.png">');
-$(todayDiv).children('.temp').text('Temp: 99');
-$(todayDiv).children('.wind').text('Wind: slow');
-$(todayDiv).children('.humidity').text('Humidity: high');
-$(todayDiv).children('.uv').html('UV Index: <button class="btn btn-success" disabled>0.00</button>');
+function renderResults(current, forcast) {
 
-cardDivs.each(function(i, card) {
-    // console.log(i, this)
-    $(card).children('.date').text('3/1/2022');
-    $(card).children('.icon').attr('src', 'https://openweathermap.org/img/w/04d.png');
-    $(card).children('.temp').text('95');
-    $(card).children('.wind').text('fast');
-    $(card).children('.humidity').text('high');
+    // console.log(current);
+    // console.log(forcast);
 
-    // switch (i) {
-    //     case 0:
-    //         // day 1
-    //         // $(this).children.eq(0)('.date').text('3/3/2022');
-    //         $(this).children('.icon').attr('src', 'https://openweathermap.org/img/w/04d.png');
-    //         $(this).children('.temp').text('95');
-    //         $(this).children('.wind').text('fast');
-    //         $(this).children('.humidity').text('high');
-    //         break;
-    //     case 1:
-    //         // day 2
-    //         $(this).children('.date').text('3/4/2022');
-    //         $(this).children('.icon').attr('src', 'https://openweathermap.org/img/w/04d.png');
-    //         $(this).children('.temp').text('95');
-    //         $(this).children('.wind').text('fast');
-    //         $(this).children('.humidity').text('high');
-    //         break;
-    //     case 2:
-    //         // day 3
-    //         $(this).children('.date').text('3/5/2022');
-    //         $(this).children('.icon').attr('src', 'https://openweathermap.org/img/w/04d.png');
-    //         $(this).children('.temp').text('95');
-    //         $(this).children('.wind').text('fast');
-    //         $(this).children('.humidity').text('high');
-    //         break;
-    //     case 3:
-    //         // day 4
-    //         $(this).children('.date').text('3/6/2022');
-    //         $(this).children('.icon').attr('src', 'https://openweathermap.org/img/w/04d.png');
-    //         $(this).children('.temp').text('95');
-    //         $(this).children('.wind').text('fast');
-    //         $(this).children('.humidity').text('high');
-    //         break;
-    //     case 4:
-    //         // day 5
-    //         $(this).children('.date').text('3/7/2022');
-    //         $(this).children('.icon').attr('src', 'https://openweathermap.org/img/w/04d.png');
-    //         $(this).children('.temp').text('95');
-    //         $(this).children('.wind').text('fast');
-    //         $(this).children('.humidity').text('high');
-    //         break;
-    // }
-})
+    // set the color of the UV button
+    var uvColor = 'uv-protect';
+    if (forcast.current.uvi < 3) {
+        uvColor = 'uv-good';
+    } else if (forcast.current.uvi > 2 && forcast.current.uvi < 6) {
+        uvColor = 'uv-medium';
+    } else if (forcast.current.uvi > 5 && forcast.current.uvi < 8) {
+        uvColor = 'uv-high';
+    } else if (forcast.current.uvi > 7 && forcast.current.uvi < 11) {
+        uvColor = 'uv-very-high';
+    } else {
+        uvColor = 'btn-danger';
+    }
+
+    // populate today's weather
+    $(todayDiv).children('.city').html(current.name + ' (' + moment.unix(current.dt).format('ddd, MMM Do YYYY') + ') ' + '<img src="https://openweathermap.org/img/w/' + forcast.current.weather[0].icon + '.png">');
+    $(todayDiv).children('.temp').text('Temp: ' + forcast.current.temp + String.fromCharCode(176));
+    $(todayDiv).children('.wind').text('Wind: ' + forcast.current.wind_speed + ' mph');
+    $(todayDiv).children('.humidity').text('Humidity: ' + forcast.current.humidity + '%');
+    $(todayDiv).children('.uv').html('UV Index: <button class="btn ' + uvColor + '" disabled>' + forcast.current.uvi + '</button>');
+
+    // populate forcast cards
+    // console.log(cardDivs);
+    cardDivs.each(function(i, card) {
+        // console.log(i, this)
+        $(card).children('.date').text(moment.unix(forcast.daily[i+1].dt).format('MM/D/YYYY'));
+        $(card).children('.icon').attr('src', 'https://openweathermap.org/img/w/' + forcast.daily[i+1].weather[0].icon + '.png');
+        $(card).children('.temp').text('Temp: ' + forcast.daily[i+1].temp.day + String.fromCharCode(176));
+        $(card).children('.wind').text('Wind: ' + forcast.daily[i+1].wind_speed + ' mph');
+        $(card).children('.humidity').text('Humidity: ' + forcast.daily[i+1].humidity + '%');
+    })
+
+    // show main content
+    main.css('display', 'block');
+
+    //save city to local storage
+    var cityResponse = current.name;
+    if (!cities.includes(cityResponse)) {
+        cities.push(cityResponse);
+        localStorage.setItem("cities", JSON.stringify(cities));
+        // add secondary button
+        var cityButton = $('<button type="button" class="btn btn-secondary btn-lg btn-block"></button>');
+        cityButton.text(cityResponse);
+        cityButtons.append(cityButton);
+    }
+    // put last saved city in text input
+    textSearch.val(cityResponse);
+}
 
 function callAPI(city) {
 
-    currentWeeatherRequest = 'https://api.openweathermap.org/data/2.5/weather?q=' + city +'&appid=' + apiKey + '&units=imperial';
+    var currentWeatherRequest = 'https://api.openweathermap.org/data/2.5/weather?q=' + city +'&appid=' + apiKey + '&units=imperial';
 
     // call api for current weather
-    fetch(currentWeeatherRequest)
+    fetch(currentWeatherRequest)
+    
     .then(function (response) {
+        // throw error for any type of exception
         if (!response.ok) {
-            throw response.json();
+            // throw response.json();
+            throw Error(response.json());
         }
+
         return response.json();
     })
-    .then(function (currentWeeatherResponse) {
 
-        console.log('One Day Results:\n----------');
-        console.log(currentWeeatherResponse);
+    // get the javascript object
+    .then(function (currentWeatherResponse) {
 
-        if (!currentWeeatherResponse.length) {
-            $('#msg').text('No resulits were found');
+        // make sure object isn't empty
+        if (!Object.getOwnPropertyNames(currentWeatherResponse).length) {
+            throw Error(currentWeatherResponse);
+            // $('#msg').text('No resulits were found');
         } else {
-            $('#msg').text('resulits were found');
-            // parse for city name. latitude and longitude
-            var cityLat = data.coord.lat;
-            var cityLon = data.coord.lon;
-            cityResponse = data.name;
+            // parse for latitude and longitude
+            var cityLat = currentWeatherResponse.coord.lat;
+            var cityLon = currentWeatherResponse.coord.lon;
 
             // call api for forcast data passing lat and lon
-            forcastWeatherRequest = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + cityLat + '&lon=' + cityLon + '&exclude=hourly,minutely,alerts&appid=' + apiKey + '&units=imperial';
+            var forcastWeatherRequest = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + cityLat + '&lon=' + cityLon + '&exclude=hourly,minutely,alerts&appid=' + apiKey + '&units=imperial';
 
             fetch(forcastWeatherRequest)
             .then(function (response) {
                 if (!response.ok) {
-                    throw response.json();
+                    // throw response.json();
+                    throw Error(response.json());
                 }
                 return response.json();
             })
             .then(function (forcastWeatherResponse) {
         
-                console.log('Forcast Results:\n----------');
-                console.log(forcastWeatherResponse);
-        
-                if (!forcastWeatherResponse.results.length) {
-                    textSearch.attr('placeholder', 'No resulits were found');
-                } else {
-                    renderResults(forcastWeatherResponse);
+                // make sure object isn't empty
+                if (!Object.getOwnPropertyNames(forcastWeatherResponse).length) {
+                    throw Error(forcastWeatherResponse);
                 }
+                // output data to browser
+                renderResults(currentWeatherResponse, forcastWeatherResponse);
             })
         }
     })
-    .catch(function (error) {
-        console.error(error);
+
+    .catch(function(err) {
+        console.error(err);
+        // TODO: parse the error and show better message
+        $('#msg').text('No resulits were found. Try again.' );
+        // show user message
+        toggleMsg('visible');
     });
 }
-
-function renderResults(objJSON) {
-    //
-    for (var i = 0; i < objJSON.results.length; i++) {
-        console.log(locRes.results[i]);
-      }
-
-};
 
 function handleSearchClick(event) {
     event.preventDefault();
 
+    // hide user message
+    toggleMsg('hidden');
+
+    // hide main content
+    main.css('display', 'none');
+
     // get the search text
     city = textSearch.val();
     if (!city.trim()) {
-        textSearch.attr('placeholder', 'Enter a city name');
+        $('#msg').text('Please enter a city name.' );
+        toggleMsg('visible');
         return;
     }
 
     callAPI(city);
 }
 
-
-
-btnSearch.on('click', handleSearchClick)
-    // var city = $(textSearch.val());
+// use event delegation incase btn-secondary doesn't exist
+cityButtons.on('click', '.btn-secondary', function(event) {
+    // get the search text
+    var btnClicked = $(event.target);
+    var city = btnClicked.text();
+    // console.log(city);
 
     // call function for calling api
-//     var success = callAPI(city);
-//     console.log(success);
-//     console.log('city' + cityResponse);
+    callAPI(city);
     
-//     if (success) {
-//         // add secondary button
-//         var cityButton = $('<button type="button" class="btn btn-secondary btn-lg btn-block"></button>');
-//         cityButton.text(cityResponse);
-//         cityButtons.append(cityButton);
+})
 
-//     }
-// }) 
+function toggleMsg(msgState) {
+    // show or hide user message
+    if (msgState == 'hidden') {
+        $('#msg').removeClass('block');
+        $('#msg').addClass('hidden');
+    }else {
+        $('#msg').removeClass('hidden');
+        $('#msg').addClass('block');
+    }
+}
 
-// cityButtons.on('click', '.btn-secondary', function(event) {
-//     // get the search text
-//     var btnClicked = $(event.target);
-//     var city = btnClicked.text();
-//     console.log(city);
-//     // textSearch.val(city);
-//     // call function for calling api
-//     var success = callAPI(city);
-    
-// })
+btnSearch.on('click', handleSearchClick)

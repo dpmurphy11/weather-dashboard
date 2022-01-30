@@ -1,23 +1,67 @@
+* {
+    font-family: 'Blinker', sans-serif;
+
+}
+.uv-good {
+    background-color: #4a7017;
+    color: white;
+}
+
+.uv-medium {
+    background-color: #fdd835;
+    color: black;
+}
+
+.uv-high {
+    background-color: #7c642d;
+    color: white;
+}
+.uv-very-high {
+    background-color: #d1394a;
+    color: white;
+}
+
+.uv-ex-high {
+    background-color: #954f71;
+    color: white;
+}
+
+header {
+    background-color: rgb(33, 33, 105);
+    color: white;
+}
 .current-weather {
-    border: 1px solid black;
+    border: 1px solid lightgray;
     min-height:35vh ;
     padding: 10px 5px;
     font-size: 1.5em;
-    font-weight: 600;
 }
 
 .city {
-    padding: 0px;
+    font-weight: 900;
 }
 
+.temp, .wind, .humidity {
+    margin-bottom: 1rem;
+}
 .custom-card {
     min-width: 13rem;
-    border: 1px solid lightgray;
     color: white;
-    background-color: darkblue;
+    background-color: rgba(4, 4, 26, 0.829);
     padding: 15px;
+    font-weight:700;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: baseline;
+    margin: 10px;
+    font-size: 1.2em;
 }
 
 .hidden {
     display: none;
+}
+
+.visible {
+    display: block;
 }
