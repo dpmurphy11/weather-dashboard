@@ -18,6 +18,7 @@ A website that allows users to search and view current and forecasted weather in
 * jQuery UI
 * Google Fonts
 * Bootstrap
+* OpenWeather API
 
 ![Weather Dashboard website screenshot](assets/images/weather-dashboard.png)
 
