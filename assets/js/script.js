@@ -5,6 +5,8 @@ const main = $('main');
 const todayDiv = $('.current-weather');
 const cardDivs =$('.custom-card');
 const apiKey = '74eee0ffef0df6f840ed6df7d1795e48'
+const clearButton = $('<button type="button" class="btn btn-dark btn-lg btn-block"></button>');
+clearButton.text('Clear History');
 
 // render saved cities to secondary buttons list
  var cities = JSON.parse(localStorage.getItem("cities")) || [];
@@ -16,6 +18,8 @@ if (cities.length) {
         cityButton.text(city);
         cityButtons.append(cityButton);
     });
+    // add clear history button
+    cityButtons.append(clearButton);
 }
 
 // populate autocomplete widget
@@ -143,6 +147,9 @@ function renderResults(current, forcast) {
         cityButton.text(cityResponse);
         cityButtons.append(cityButton);
     }
+    // add clear history button
+    cityButtons.append(clearButton);
+
     // put last saved city in text input
     textSearch.val(cityResponse);
 }
@@ -228,18 +235,6 @@ function handleSearchClick(event) {
     callAPI(city);
 }
 
-// use event delegation incase btn-secondary doesn't exist
-cityButtons.on('click', '.btn-secondary', function(event) {
-    // get the search text
-    var btnClicked = $(event.target);
-    var city = btnClicked.text();
-    // console.log(city);
-
-    // call function for calling api
-    callAPI(city);
-    
-})
-
 function toggleMsg(msgState) {
     // show or hide user message
     if (msgState == 'hidden') {
@@ -251,4 +246,22 @@ function toggleMsg(msgState) {
     }
 }
 
-btnSearch.on('click', handleSearchClick)
+// use event delegation incase btn-secondary doesn't exist
+cityButtons.on('click', '.btn-secondary', function(event) {
+    // get the search text
+    var btnClicked = $(event.target);
+    var city = btnClicked.text();
+    // console.log(city);
+
+    // call function for calling api
+    callAPI(city);
+});
+
+cityButtons.on('click', '.btn-dark', function() {
+    console.log(cityButtons)
+    cities = [];
+    localStorage.clear();
+    cityButtons.html('');
+});
+
+btnSearch.on('click', handleSearchClick);
