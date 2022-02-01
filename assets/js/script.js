@@ -117,7 +117,7 @@ function renderResults(current, forcast) {
     }
 
     // populate today's weather
-    $(todayDiv).children('.city').html(current.name + ' (' + moment.unix(current.dt).format('ddd, MMM Do YYYY') + ') ' + '<img src="https://openweathermap.org/img/wn/' + forcast.current.weather[0].icon + '@2x.png">');
+    $(todayDiv).children('.city').html(current.name + ' (' + moment.unix(current.dt).format('ddd, MMM Do YYYY') + ') ' + '<img src="https://openweathermap.org/img/w/' + forcast.current.weather[0].icon + '.png">');
     $(todayDiv).children('.temp').text('Temp: ' + forcast.current.temp + String.fromCharCode(176));
     $(todayDiv).children('.wind').text('Wind: ' + forcast.current.wind_speed + ' mph');
     $(todayDiv).children('.humidity').text('Humidity: ' + forcast.current.humidity + '%');
