@@ -5,7 +5,7 @@ const main = $('main');
 const todayDiv = $('.current-weather');
 const cardDivs =$('.custom-card');
 const apiKey = '74eee0ffef0df6f840ed6df7d1795e48'
-const clearButton = $('<button type="button" class="btn btn-dark btn-lg btn-block"></button>');
+const clearButton = $('<button type="button" class="btn btn-dark btn-sm btn-block"></button>');
 clearButton.text('Clear History');
 
 // render saved cities to secondary buttons list
@@ -257,8 +257,9 @@ cityButtons.on('click', '.btn-secondary', function(event) {
     callAPI(city);
 });
 
+// clear history buttons and local stoarage
 cityButtons.on('click', '.btn-dark', function() {
-    console.log(cityButtons)
+    // console.log(cityButtons)
     cities = [];
     localStorage.clear();
     cityButtons.html('');
