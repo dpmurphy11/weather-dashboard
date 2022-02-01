@@ -10,6 +10,14 @@ const apiKey = '74eee0ffef0df6f840ed6df7d1795e48'
 const clearButton = $('<button type="button" class="btn btn-dark btn-sm btn-block"></button>');
 clearButton.text('Clear History');
 
+// init
+// hide main content
+main.css('display', 'none');
+// hide user message
+toggleMsg('hidden');
+// show search history buttons
+renderCityHistory();
+
 function renderCityHistory() {
 
     // clear the history buttons then rebuild from local storage
@@ -116,13 +124,9 @@ function renderResults(current, forcast) {
     if (forcast.current.uvi < 3) {
         uvColor = 'uv-good';
     } else if (forcast.current.uvi > 2 && forcast.current.uvi < 6) {
-        uvColor = 'uv-medium';
-    } else if (forcast.current.uvi > 5 && forcast.current.uvi < 8) {
         uvColor = 'uv-high';
-    } else if (forcast.current.uvi > 7 && forcast.current.uvi < 11) {
-        uvColor = 'uv-very-high';
     } else {
-        uvColor = 'uv-ex-high';
+        uvColor = 'uv-very-high';
     }
 
     // populate today's weather
@@ -180,6 +184,7 @@ function callAPI(city) {
             var cityLon = currentWeatherResponse.coord.lon;
             cityResponse = currentWeatherResponse.name;
 
+            // show search history in sidebar
             renderCityHistory();
 
             // call api for forcast data passing lat and lon
@@ -213,13 +218,6 @@ function callAPI(city) {
         toggleMsg('visible');
     });
 }
-
-// hide main content
-main.css('display', 'none');
-// hide user message
-toggleMsg('hidden');
-// show search history buttons
-renderCityHistory();
 
 function handleSearchClick(event) {
     event.preventDefault();

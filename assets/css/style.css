@@ -3,27 +3,17 @@ body {
     background-color: white;
 }
 
-
+/* uv button colors */
 .uv-good {
     background-color: #4a7017;
 }
-
-.uv-medium {
-    background-color: #fdd835;
-}
-
 .uv-high {
     background-color: var(--warning);
 }
 .uv-very-high {
     background-color: var(--danger);
 }
-
-.uv-ex-high {
-    background-color: #d43683;
-}
-
-.uv-good, .uv-medium, .uv-high, .uv-very-high.uv-ex-high {
+.uv-good, ..uv-high, .uv-very-high {
     color: black;
     transition: none;
 }
