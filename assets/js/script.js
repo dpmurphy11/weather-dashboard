@@ -4,22 +4,37 @@ const cityButtons = $('#button-cities');
 const main = $('main');
 const todayDiv = $('.current-weather');
 const cardDivs =$('.custom-card');
+var cityResponse = '';
+var cities;
 const apiKey = '74eee0ffef0df6f840ed6df7d1795e48'
 const clearButton = $('<button type="button" class="btn btn-dark btn-sm btn-block"></button>');
 clearButton.text('Clear History');
 
-// render saved cities to secondary buttons list
- var cities = JSON.parse(localStorage.getItem("cities")) || [];
-if (cities.length) {
-    cities.sort();
-    cities.forEach(city => {
-        // add secondary button
-        var cityButton = $('<button type="button" class="btn btn-secondary btn-lg btn-block"></button>');
-        cityButton.text(city);
-        cityButtons.append(cityButton);
-    });
-    // add clear history button
-    cityButtons.append(clearButton);
+function renderCityHistory() {
+
+    // clear the history buttons then rebuild from local storage
+    cityButtons.html('');
+    // set global array
+    cities = JSON.parse(localStorage.getItem("cities")) || [];
+
+    // add to array and local storage if it's not there
+    if (cityResponse.length && !cities.includes(cityResponse)) {
+        cities.push(cityResponse);
+        localStorage.setItem("cities", JSON.stringify(cities));
+    }
+
+    // bulid the history buttons list
+    if (cities.length) {
+        // cities.sort();
+        cities.forEach(city => {
+            // add secondary button
+            var cityButton = $('<button type="button" class="btn btn-secondary btn-lg btn-block"></button>');
+            cityButton.text(city);
+            cityButtons.prepend(cityButton);
+        });
+        // add clear history button
+        cityButtons.append(clearButton);
+    }
 }
 
 // populate autocomplete widget
@@ -92,18 +107,12 @@ availableTags.sort();
     source: availableTags
   });
 
-// hide main content
-main.css('display', 'none');
-// hide user message
-toggleMsg('hidden');
-
 function renderResults(current, forcast) {
 
     // console.log(current);
     // console.log(forcast);
 
     // set the color of the UV button
-    var uvColor = 'uv-protect';
     if (forcast.current.uvi < 3) {
         uvColor = 'uv-good';
     } else if (forcast.current.uvi > 2 && forcast.current.uvi < 6) {
@@ -113,7 +122,7 @@ function renderResults(current, forcast) {
     } else if (forcast.current.uvi > 7 && forcast.current.uvi < 11) {
         uvColor = 'uv-very-high';
     } else {
-        uvColor = 'btn-danger';
+        uvColor = 'uv-ex-high';
     }
 
     // populate today's weather
@@ -121,7 +130,7 @@ function renderResults(current, forcast) {
     $(todayDiv).children('.temp').text('Temp: ' + forcast.current.temp + String.fromCharCode(176));
     $(todayDiv).children('.wind').text('Wind: ' + forcast.current.wind_speed + ' mph');
     $(todayDiv).children('.humidity').text('Humidity: ' + forcast.current.humidity + '%');
-    $(todayDiv).children('.uv').html('UV Index: <button class="btn ' + uvColor + '" disabled>' + forcast.current.uvi + '</button>');
+    $(todayDiv).children('.uv').html('UV Index: <button class="btn btn-lg ' + uvColor + '" disabled>' + forcast.current.uvi + '</button>');
 
     // populate forcast cards
     // console.log(cardDivs);
@@ -137,20 +146,7 @@ function renderResults(current, forcast) {
     // show main content
     main.css('display', 'block');
 
-    //save city to local storage
-    var cityResponse = current.name;
-    if (!cities.includes(cityResponse)) {
-        cities.push(cityResponse);
-        localStorage.setItem("cities", JSON.stringify(cities));
-        // add secondary button
-        var cityButton = $('<button type="button" class="btn btn-secondary btn-lg btn-block"></button>');
-        cityButton.text(cityResponse);
-        cityButtons.append(cityButton);
-    }
-    // add clear history button
-    cityButtons.append(clearButton);
-
-    // put last saved city in text input
+    // put last searched city in text input
     textSearch.val(cityResponse);
 }
 
@@ -182,6 +178,9 @@ function callAPI(city) {
             // parse for latitude and longitude
             var cityLat = currentWeatherResponse.coord.lat;
             var cityLon = currentWeatherResponse.coord.lon;
+            cityResponse = currentWeatherResponse.name;
+
+            renderCityHistory();
 
             // call api for forcast data passing lat and lon
             var forcastWeatherRequest = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + cityLat + '&lon=' + cityLon + '&exclude=hourly,minutely,alerts&appid=' + apiKey + '&units=imperial';
@@ -215,6 +214,13 @@ function callAPI(city) {
     });
 }
 
+// hide main content
+main.css('display', 'none');
+// hide user message
+toggleMsg('hidden');
+// show search history buttons
+renderCityHistory();
+
 function handleSearchClick(event) {
     event.preventDefault();
 
@@ -225,13 +231,14 @@ function handleSearchClick(event) {
     main.css('display', 'none');
 
     // get the search text
-    city = textSearch.val();
-    if (!city.trim()) {
+    city = textSearch.val().trim();
+    if (!city) {
         $('#msg').text('Please enter a city name.' );
         toggleMsg('visible');
         return;
     }
 
+    // call apis
     callAPI(city);
 }
 
@@ -248,21 +255,23 @@ function toggleMsg(msgState) {
 
 // use event delegation incase btn-secondary doesn't exist
 cityButtons.on('click', '.btn-secondary', function(event) {
-    // get the search text
-    var btnClicked = $(event.target);
-    var city = btnClicked.text();
-    // console.log(city);
+    event.preventDefault();
 
-    // call function for calling api
+    // get the search text
+    var city = $(event.target).text();
+
+    // call apis
     callAPI(city);
 });
 
 // clear history buttons and local stoarage
-cityButtons.on('click', '.btn-dark', function() {
-    // console.log(cityButtons)
-    cities = [];
+cityButtons.on('click', '.btn-dark', function(event) {
+    event.preventDefault();
+
+    cityResponse = '';
     localStorage.clear();
-    cityButtons.html('');
+    renderCityHistory();
+
 });
 
 btnSearch.on('click', handleSearchClick);
