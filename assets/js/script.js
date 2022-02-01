@@ -9,6 +9,7 @@ var cities;
 const apiKey = '74eee0ffef0df6f840ed6df7d1795e48'
 const clearButton = $('<button type="button" class="btn btn-dark btn-sm btn-block"></button>');
 clearButton.text('Clear History');
+var ccr;
 
 // init
 // hide main content
@@ -182,6 +183,7 @@ function callAPI(city) {
             // parse for latitude and longitude
             var cityLat = currentWeatherResponse.coord.lat;
             var cityLon = currentWeatherResponse.coord.lon;
+            /*** SCOPING ISSUE. CAN'T REFERENCE THE OBJECT OUTSIDE THE PROMISE. SET THE GLOBAL VAR TO THE OBJECT PROP HERE ***/
             cityResponse = currentWeatherResponse.name;
 
             // show search history in sidebar
@@ -205,6 +207,7 @@ function callAPI(city) {
                     throw Error(forcastWeatherResponse);
                 }
                 // output data to browser
+                /*** SCOPING ISSUE. CAN'T REFERENCE THE OBJECT OUTSIDE THE PROMISE ***/
                 renderResults(currentWeatherResponse, forcastWeatherResponse);
             })
         }
@@ -243,11 +246,11 @@ function handleSearchClick(event) {
 function toggleMsg(msgState) {
     // show or hide user message
     if (msgState == 'hidden') {
-        $('#msg').removeClass('block');
+        $('#msg').removeClass('visible');
         $('#msg').addClass('hidden');
     }else {
         $('#msg').removeClass('hidden');
-        $('#msg').addClass('block');
+        $('#msg').addClass('visible');
     }
 }
 
