@@ -9,42 +9,6 @@ var cities;
 const apiKey = '74eee0ffef0df6f840ed6df7d1795e48'
 const clearButton = $('<button type="button" class="btn btn-dark btn-sm btn-block"></button>');
 clearButton.text('Clear History');
-var ccr;
-
-// init
-// hide main content
-main.css('display', 'none');
-// hide user message
-toggleMsg('hidden');
-// show search history buttons
-renderCityHistory();
-
-function renderCityHistory() {
-
-    // clear the history buttons then rebuild from local storage
-    cityButtons.html('');
-    // set global array
-    cities = JSON.parse(localStorage.getItem("cities")) || [];
-
-    // add to array and local storage if it's not there
-    if (cityResponse.length && !cities.includes(cityResponse)) {
-        cities.push(cityResponse);
-        localStorage.setItem("cities", JSON.stringify(cities));
-    }
-
-    // bulid the history buttons list
-    if (cities.length) {
-        // cities.sort();
-        cities.forEach(city => {
-            // add secondary button
-            var cityButton = $('<button type="button" class="btn btn-secondary btn-lg btn-block"></button>');
-            cityButton.text(city);
-            cityButtons.prepend(cityButton);
-        });
-        // add clear history button
-        cityButtons.append(clearButton);
-    }
-}
 
 // populate autocomplete widget
 var availableTags = [
@@ -115,6 +79,34 @@ availableTags.sort();
   textSearch.autocomplete({
     source: availableTags
   });
+
+function renderCityHistory() {
+
+    // clear the history buttons then rebuild from local storage
+    cityButtons.html('');
+    // set global array
+    cities = JSON.parse(localStorage.getItem("cities")) || [];
+
+    // add current city to array and local storage if it's not there
+    if (cityResponse.length && !cities.includes(cityResponse)) {
+        cities.push(cityResponse);
+        localStorage.setItem("cities", JSON.stringify(cities));
+    }
+
+    // bulid the history buttons list
+    if (cities.length) {
+        // cities.sort();
+        cities.forEach(city => {
+            // add secondary button
+            var cityButton = $('<button type="button" class="btn btn-secondary btn-lg btn-block"></button>');
+            cityButton.text(city);
+            // prepend so the last searched city is at the iop of list
+            cityButtons.prepend(cityButton);
+        });
+        // add clear history button
+        cityButtons.append(clearButton);
+    }
+}
 
 function renderResults(current, forcast) {
 
@@ -276,3 +268,18 @@ cityButtons.on('click', '.btn-dark', function(event) {
 });
 
 btnSearch.on('click', handleSearchClick);
+
+// init
+$(document).ready(function() {
+    // hide main content
+    main.css('display', 'none');
+    // hide user message
+    toggleMsg('hidden');
+    // show search history buttons
+    renderCityHistory();
+    // call api for last searched city
+    if (cities.length) {
+        console.log(cities.at(-1));
+        callAPI(cities.at(-1));
+    }
+});
